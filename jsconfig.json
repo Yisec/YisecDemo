@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "jsx": "react",
+        "module": "commonjs",
+        "baseUrl": "./src",
+        "experimentalDecorators": true,
+        "paths": {
+            "wpt/*": ["./src/main/*"]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

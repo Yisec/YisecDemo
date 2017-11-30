@@ -1,0 +1,22 @@
+{
+    "presets": [
+        [
+            "env",
+            {
+                "modules": false,
+                "targets": {
+                    "browsers": [
+                        "safari >= 7",
+                        "ie >= 9"
+                    ]
+                }
+            }
+        ]
+    ],
+    "plugins": [
+        "syntax-dynamic-import",
+        "transform-object-rest-spread", 
+        "transform-decorators-legacy",
+        "transform-class-properties"
+    ]
+}
