@@ -10,5 +10,5 @@ export default {
         } catch (err) {
             return []
         }
-    }
+    },
 }

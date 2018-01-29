@@ -537,9 +537,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__index_scss__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__douban__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_yisec__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_yisec___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_yisec__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__svg__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_yisec__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_yisec___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_yisec__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _class, _temp2;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -553,14 +556,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-Object(__WEBPACK_IMPORTED_MODULE_3_yisec__["addPipe"])({
+
+Object(__WEBPACK_IMPORTED_MODULE_4_yisec__["addPipe"])({
     date: function date(time) {
         var d = new Date(time);
         return '\u521B\u5EFA\u4E8E: ' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    },
+    log: function log(any) {
+        console.log('log', any);
+        return any;
     }
 });
 
-var Btn = function (_Component) {
+var Btn = (_temp2 = _class = function (_Component) {
     _inherits(Btn, _Component);
 
     function Btn() {
@@ -574,25 +582,16 @@ var Btn = function (_Component) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Btn.__proto__ || Object.getPrototypeOf(Btn)).call.apply(_ref, [this].concat(args))), _this), _this.template = '\n        <button style="background: red;" @click="click">\n            <span>\n                <slot></slot>\n            </span>\n        </button>\n    ', _this.click = function () {
-            _this.props.click();
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Btn.__proto__ || Object.getPrototypeOf(Btn)).call.apply(_ref, [this].concat(args))), _this), _this.template = '\n        <button style="background: red;" @click="click">\n            <span>\n                {props.title}\n                <slot />\n            </span>\n        </button>\n    ', _this.click = function (e) {
+            _this.props.click(e);
             _this.$emit('heihei', 1, 2);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     return Btn;
-}(__WEBPACK_IMPORTED_MODULE_3_yisec__["Component"]);
-
-// store，可直接使用
-
-
-var store = Object(__WEBPACK_IMPORTED_MODULE_3_yisec__["observer"])({
-    items: __WEBPACK_IMPORTED_MODULE_1__store__["a" /* default */].get() || [],
-    time: 0,
-    save: function save() {
-        __WEBPACK_IMPORTED_MODULE_1__store__["a" /* default */].save(this.items);
-    }
-}, { deep: true });
+}(__WEBPACK_IMPORTED_MODULE_4_yisec__["Component"]), _class.defaultProps = {
+    title: '默认的'
+}, _temp2);
 
 var Todo = function (_Component2) {
     _inherits(Todo, _Component2);
@@ -600,7 +599,7 @@ var Todo = function (_Component2) {
     function Todo() {
         var _ref2;
 
-        var _temp2, _this2, _ret2;
+        var _temp3, _this2, _ret2;
 
         _classCallCheck(this, Todo);
 
@@ -608,12 +607,12 @@ var Todo = function (_Component2) {
             args[_key2] = arguments[_key2];
         }
 
-        return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = Todo.__proto__ || Object.getPrototypeOf(Todo)).call.apply(_ref2, [this].concat(args))), _this2), _this2.state = {
+        return _ret2 = (_temp3 = (_this2 = _possibleConstructorReturn(this, (_ref2 = Todo.__proto__ || Object.getPrototypeOf(Todo)).call.apply(_ref2, [this].concat(args))), _this2), _this2.state = {
             edit: false,
             store: store
-        }, _this2.mclass = __WEBPACK_IMPORTED_MODULE_0__index_scss___default.a, _this2.components = {
+        }, _this2.moduleCss = __WEBPACK_IMPORTED_MODULE_0__index_scss___default.a, _this2.components = {
             Btn: Btn
-        }, _this2.template = '\n        <div class="flex" mclass="todo-item" leaveTime="300" leave-class="xxx">\n            <input type="checkbox" :checked="item.complete" @change="toggle" />\n            {{index}}:\n            <div mclass="item-text">\n                <input \n                    v-if="state.edit" \n                    type="text" \n                    ref="$title" \n                    :value="item.title" \n                    @ctrlEnter="toggleEdit" \n                    @blur="toggleEdit" \n                    autofocus />\n                <div v-if="!state.edit" @click="toggleEdit">\n                    {{item.title}}\n                </div>\n            </div>\n            <div>\n                {{ store.time }}\n                <button @click="() => store.time++">+1</button>\n            </div>\n            <Btn @click="del"> \n                del\n            </Btn>\n        </div>\n        <p style="font-size: 12px; color: gray; text-align: right;">{{props.key|date}}</p>\n        <slot @name="props.key" />\n    ', _this2.emit = {
+        }, _this2.emit = {
             pageSwitch: function pageSwitch(state) {
                 console.log('btn', state);
             },
@@ -629,10 +628,15 @@ var Todo = function (_Component2) {
         }, _this2.toggle = function () {
             _this2.props.item.complete = !_this2.props.item.complete;
             _this2.props.save();
-        }, _temp2), _possibleConstructorReturn(_this2, _ret2);
+        }, _temp3), _possibleConstructorReturn(_this2, _ret2);
     }
 
     _createClass(Todo, [{
+        key: 'willMount',
+        value: function willMount() {
+            console.log(this.props);
+        }
+    }, {
         key: 'willUnmount',
         value: function willUnmount() {
             console.log('(ಥ _ ಥ)被卸载了', this.props);
@@ -644,12 +648,17 @@ var Todo = function (_Component2) {
             this.$emitSiblings('haha', '通知兄弟们');
             return false;
         }
+    }, {
+        key: 'render',
+        value: function render() {
+            return '\n            <div class="flex todo-item" leaveTime="300" leave-class="xxx">\n                <input type="checkbox" :checked="item.complete" @change="toggle" />\n                {index}:\n                <div class="item-text">\n                    <template ys:if={state.edit}>\n                        <span>\u9648\u83B9</span>\n                        <input\n                            type="text"\n                            ref="$title"\n                            :value={item.title + "\u54C8\u54C8\u54C8\u54C8"}\n                            @ctrlEnter={toggleEdit}\n                            @blur={toggleEdit}\n                            autofocus />\n                    </template>\n                    <div ys:if={!state.edit} @click={toggleEdit}>\n                        {item.title}\n                    </div>\n                </div>\n                <div>\n                    { store.time }\n                    <button @click={() => store.time++}>+1</button>\n                </div>\n                <Btn @click="del">\n                    del\n                </Btn>\n            </div>\n            <p style="font-size: 12px; color: gray; text-align: right;">{props.key|date|log}</p>\n            <slot @name={props.key}/>\n            <video src="https://media.weipaitang.com/wpt_o_1514733267125oR1dMEVX0c7dVlU" controls width="100%" height="auto"></video>\n        ';
+        }
     }]);
 
     return Todo;
-}(__WEBPACK_IMPORTED_MODULE_3_yisec__["Component"]);
+}(__WEBPACK_IMPORTED_MODULE_4_yisec__["Component"]);
 
-__WEBPACK_IMPORTED_MODULE_3_yisec___default.a.register('Todo', Todo);
+__WEBPACK_IMPORTED_MODULE_4_yisec___default.a.register('Todo', Todo);
 
 var TodoList = function (_Component3) {
     _inherits(TodoList, _Component3);
@@ -657,7 +666,7 @@ var TodoList = function (_Component3) {
     function TodoList() {
         var _ref3;
 
-        var _temp3, _this3, _ret3;
+        var _temp4, _this3, _ret3;
 
         _classCallCheck(this, TodoList);
 
@@ -665,7 +674,7 @@ var TodoList = function (_Component3) {
             args[_key3] = arguments[_key3];
         }
 
-        return _ret3 = (_temp3 = (_this3 = _possibleConstructorReturn(this, (_ref3 = TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call.apply(_ref3, [this].concat(args))), _this3), _this3.mclass = __WEBPACK_IMPORTED_MODULE_0__index_scss___default.a, _this3.state = {
+        return _ret3 = (_temp4 = (_this3 = _possibleConstructorReturn(this, (_ref3 = TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call.apply(_ref3, [this].concat(args))), _this3), _this3.moduleCss = __WEBPACK_IMPORTED_MODULE_0__index_scss___default.a, _this3.state = {
             filter: 'all',
             buttons: ['all', 'active', 'complete']
             // getter
@@ -674,20 +683,20 @@ var TodoList = function (_Component3) {
                 var store = this.props.store;
 
                 var type = this.state.filter;
-                return store.items.filter(function (i) {
-                    if (type == 'all') {
+                var result = store.items.filter(function (item) {
+                    if (type === 'all') {
                         return true;
-                    } else if (type == 'active') {
-                        return !i.complete;
-                    } else if (type == 'complete') {
-                        return i.complete;
+                    } else if (type === 'complete') {
+                        return item.complete;
+                    } else {
+                        return !item.complete;
                     }
                 });
+                console.log(result);
+                return result;
             },
             left: function left() {
-                return this.props.store.items.filter(function (i) {
-                    return !i.complete;
-                }).length;
+                return store.items.length;
             }
         }, _this3.emit = {
             heihei: function heihei() {
@@ -701,7 +710,8 @@ var TodoList = function (_Component3) {
                 _this3.state.filter = type;
             };
         }, _this3.del = function (id) {
-            return function () {
+            return function (event) {
+                event.stopPropagation();
                 var store = _this3.props.store;
 
                 store.items = store.items.filter(function (i) {
@@ -722,7 +732,7 @@ var TodoList = function (_Component3) {
             store.save();
         }, _this3.slotClick = function () {
             console.log(_this3.state.filter);
-        }, _temp3), _possibleConstructorReturn(_this3, _ret3);
+        }, _this3.src = "http://m10.music.126.net/20180102001556/8f589ae4f0fb16c572ef3a5589efa16e/ymusic/1606/426f/10a6/a01cace34f2df73c384bbcfe3e30b827.mp3", _temp4), _possibleConstructorReturn(_this3, _ret3);
     }
     // 处理css modules
 
@@ -730,18 +740,53 @@ var TodoList = function (_Component3) {
 
 
     _createClass(TodoList, [{
+        key: 'willMount',
+        value: function willMount() {
+            console.log(this.getType);
+        }
+    }, {
+        key: 'getType',
+        value: function getType(type) {
+            return type;
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return '\n            <div mclass="main" :enter-mclass="[\'transition-up\']">\n                <h1 mclass="xx haha" @click="pageChange"> Todo List </h1>\n                <input \n                    type="text" \n                    mclass="add-input"\n                    ref="$input"\n                    @enter="add"\n                    placeholder="add a todo item" />\n                <div v-for="(item,index) in currentItems">\n                    <Todo :index="index" :item="item" :del="del(item.id)" :key="item.id" :save="store.save">\n                        <p :click="slotClick">slot render {{ name | date }}</p>\n                    </Todo>\n                </div>\n                <div v-if="!currentItems.length">\n                    Empty !!!\n                </div>\n                <div>\n                    {{left}} left\n                    <span v-for="type in state.buttons" mclass="btns">\n                        <button @click="changeFilter(type)" :mclass="{current: state.filter === type}">\n                            {{type}}\n                        </button>\n                    </span>\n                </div>\n            </div>\n        ';
+            return '\n            <div class="main" :enter-class={[\'transition-up\']}>\n                <Link href="/douban">\u53BB\u8C46\u74E3</Link>\n                <Link href="/svg">SVG</Link>\n                <h1 class="xx haha" @click="pageChange"> Todo List </h1>\n                <audio src={src} controls loop></audio>\n                <input\n                    type="text"\n                    class="add-input"\n                    ref="$input"\n                    @enter="add"\n                    placeholder="add a todo item" />\n                <div ys:for="(item,index) in currentItems">\n                    <Todo :index="index" item={item} del={del(item.id)} key={item.id} save={store.save}>\n                        <p click={slotClick}>slot render { name | date }</p>\n                    </Todo>\n                </div>\n                <div ys:if={!currentItems.length}>\n                    Empty !!!\n                </div>\n                <div>\n                    {left} left\n                    <span ys:for={type in state.buttons} class="btns">\n                        <button @click={changeFilter(type)} :class={[{current: state.filter === type}]}>\n                            {getType(type)}\n                        </button>\n                    </span>\n                </div>\n            </div>\n        ';
         }
     }]);
 
     return TodoList;
-}(__WEBPACK_IMPORTED_MODULE_3_yisec__["Component"]);
+}(__WEBPACK_IMPORTED_MODULE_4_yisec__["Component"]);
 
 // console.log(process.env.NAME)
 
-window.xx = Object(__WEBPACK_IMPORTED_MODULE_3_yisec__["render"])(TodoList, { store: store }, document.querySelector('#app'));
+// store，可直接使用
+
+
+var store = Object(__WEBPACK_IMPORTED_MODULE_4_yisec__["observer"])({
+    items: __WEBPACK_IMPORTED_MODULE_1__store__["a" /* default */].get() || [],
+    time: 0,
+    save: function save() {
+        __WEBPACK_IMPORTED_MODULE_1__store__["a" /* default */].save(this.items);
+    }
+}, { deep: true });
+
+Object(__WEBPACK_IMPORTED_MODULE_4_yisec__["router"])({
+    hash: true,
+    routes: {
+        '/': {
+            component: TodoList,
+            props: { store: store }
+        },
+        '/douban': {
+            component: __WEBPACK_IMPORTED_MODULE_2__douban__["a" /* default */]
+        },
+        '/svg': {
+            component: __WEBPACK_IMPORTED_MODULE_3__svg__["a" /* default */]
+        }
+    }
+});
 
 /***/ }),
 /* 5 */
@@ -916,11 +961,14 @@ var key = 'test_app';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Douban; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ajax__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_yisec__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_yisec___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_yisec__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__index_scss__);
+var _class2, _temp3, _class4, _temp6;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -948,23 +996,44 @@ var store = Object(__WEBPACK_IMPORTED_MODULE_1_yisec__["observer"])({
     'get-top250': function () {
         var ajax = false;
         return function () {
-            var _this2 = this;
-
             if (ajax) return;
             ajax = true;
             var url = 'https://m.douban.com/rexxar/api/v2/subject_collection/filter_movie_classic_hot/items?start=' + this.top250.length + '&count=18';
             Object(__WEBPACK_IMPORTED_MODULE_0__ajax__["a" /* jsonp */])(url, function (res) {
-                var _top;
+                var _store$top;
 
-                (_top = _this2.top250).push.apply(_top, _toConsumableArray(res.subject_collection_items));
+                (_store$top = store.top250).push.apply(_store$top, _toConsumableArray(res.subject_collection_items));
                 ajax = false;
             });
         };
     }()
 }, { deep: true });
 
-var Scroll = function () {
+var Scroll = window.ss = function () {
     var cache = {};
+
+    function trigger(key) {
+        var data = {
+            top: Scroll.top,
+            bottom: Scroll.bottom,
+            height: Scroll.height
+        };
+        if (key) {
+            cache[key] && cache[key](data);
+        } else {
+            Object.keys(cache).forEach(function (key) {
+                cache[key] && cache[key](data);
+            });
+        }
+    }
+    var timeout = void 0;
+    window.addEventListener('scroll', function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            trigger();
+        }, 50);
+    });
+
     return {
         get top() {
             return document.body.scrollTop || document.documentElement.scrollTop;
@@ -989,9 +1058,19 @@ var Scroll = function () {
             Scroll.bottom = 0;
         },
         on: function on(key, fn) {
+            var _this2 = this;
+
             // if ()
+            cache[key] = fn;
+            trigger(key);
+            return function () {
+                _this2.off(key);
+            };
         },
-        off: function off(key, fn) {}
+        off: function off(key) {
+            delete cache[key];
+            return this;
+        }
     };
 }();
 
@@ -1012,7 +1091,7 @@ var Wall = function (_Component) {
         }
 
         return _ret = (_temp = (_this3 = _possibleConstructorReturn(this, (_ref = Wall.__proto__ || Object.getPrototypeOf(Wall)).call.apply(_ref, [this].concat(args))), _this3), _this3.onScroll = function () {
-            if (Scroll.bottom < 100) {
+            if (Scroll.bottom < 2000) {
                 _this3.props.onScroll && _this3.props.onScroll();
             }
         }, _temp), _possibleConstructorReturn(_this3, _ret);
@@ -1041,40 +1120,77 @@ var Wall = function (_Component) {
 // 图片懒加载
 
 
-var Lazy = function (_Component2) {
+var Lazy = (_temp3 = _class2 = function (_Component2) {
     _inherits(Lazy, _Component2);
 
     function Lazy() {
-        _classCallCheck(this, Lazy);
-
-        return _possibleConstructorReturn(this, (Lazy.__proto__ || Object.getPrototypeOf(Lazy)).apply(this, arguments));
-    }
-
-    _createClass(Lazy, [{
-        key: 'render',
-        value: function render() {
-            return '\n            <img src="" alt="">\n        ';
-        }
-    }]);
-
-    return Lazy;
-}(__WEBPACK_IMPORTED_MODULE_1_yisec__["Component"]);
-
-var Movie = function (_Component3) {
-    _inherits(Movie, _Component3);
-
-    function Movie() {
         var _ref2;
 
-        var _temp2, _this5, _ret2;
+        var _temp2, _this4, _ret2;
 
-        _classCallCheck(this, Movie);
+        _classCallCheck(this, Lazy);
 
         for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
             args[_key2] = arguments[_key2];
         }
 
-        return _ret2 = (_temp2 = (_this5 = _possibleConstructorReturn(this, (_ref2 = Movie.__proto__ || Object.getPrototypeOf(Movie)).call.apply(_ref2, [this].concat(args))), _this5), _this5.computed = {
+        return _ret2 = (_temp2 = (_this4 = _possibleConstructorReturn(this, (_ref2 = Lazy.__proto__ || Object.getPrototypeOf(Lazy)).call.apply(_ref2, [this].concat(args))), _this4), _this4.key = 'lazy-img-' + Lazy.id++, _this4.addScroll = function (_ref3) {
+            var height = _ref3.height,
+                top = _ref3.top,
+                bottom = _ref3.bottom;
+
+            var rect = _this4.refs.img.getBoundingClientRect();
+            var _window = window,
+                innerHeight = _window.innerHeight;
+
+            if (rect.top >= 0 && rect.top <= innerHeight || rect.bottom >= 0 && rect.bottom <= innerHeight || rect.top < 0 && rect.bottom > innerHeight) {
+                var src = _this4.props.src;
+
+                _this4.rmScroll();
+                _this4.refs.img.src = src;
+            }
+        }, _this4.rmScroll = function () {
+            return Scroll.off(_this4.key);
+        }, _temp2), _possibleConstructorReturn(_this4, _ret2);
+    }
+
+    _createClass(Lazy, [{
+        key: 'didMount',
+        value: function didMount() {
+            Scroll.on(this.key, this.addScroll);
+        }
+    }, {
+        key: 'willMount',
+        value: function willMount() {
+            this.rmScroll();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return '\n            <img ref="img" :class="props.class" :style="props.style" referrerpolicy="never" />\n        ';
+        }
+    }]);
+
+    return Lazy;
+}(__WEBPACK_IMPORTED_MODULE_1_yisec__["Component"]), _class2.id = 0, _temp3);
+
+var Movie = function (_Component3) {
+    _inherits(Movie, _Component3);
+
+    function Movie() {
+        var _ref4;
+
+        var _temp4, _this5, _ret3;
+
+        _classCallCheck(this, Movie);
+
+        for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+            args[_key3] = arguments[_key3];
+        }
+
+        return _ret3 = (_temp4 = (_this5 = _possibleConstructorReturn(this, (_ref4 = Movie.__proto__ || Object.getPrototypeOf(Movie)).call.apply(_ref4, [this].concat(args))), _this5), _this5.components = {
+            Lazy: Lazy
+        }, _this5.computed = {
             bgd: function bgd() {
                 var cover = _this5.props.cover;
 
@@ -1084,40 +1200,44 @@ var Movie = function (_Component3) {
                     textDecoration: 'none',
                     position: 'relative',
                     fontSize: '14px',
-                    color: '#fff'
+                    color: '#fff',
+                    margin: '0 auto'
                 };
+            },
+            isShow: function isShow() {
+                return !/惊悚|恐怖/.test(_this5.props.info);
             }
-        }, _temp2), _possibleConstructorReturn(_this5, _ret2);
+        }, _temp4), _possibleConstructorReturn(_this5, _ret3);
     }
 
     _createClass(Movie, [{
         key: 'render',
         value: function render() {
-            //  :src="item.cover.url" 
-            return '\n            <a target="_blank" :style="bgd">\n                <img style="position: absolute; height: 100%; width: 100%; bottom: 0;" alt="" referrerpolicy="never">\n                <div style="position: absolute; bottom: 0; width: 100%; box-sizing: border-box; padding: 1em; background: rgba(0, 0, 0, .6);">\n                    <h2>{{ title }}</h2>\n                    <p>\u5BFC\u6F14: {{directors}}</p>\n                    <p>\u4FE1\u606F: {{info}}</p>\n                    <p>\u8BC4\u5206: \n                        <span v-if="rating">\n                            {{rating.value}}/{{rating.max + \' \'}} {{rating.count}}\u8BC4\u4EF7\n                        </span>\n                        <span v-if="!rating">\n                            \u6682\u65E0\n                        </span>\n                    </p>\n                </div>\n            </a>\n        ';
+            // 把连续的 if elesif else 作为一个node 也可以定义一个不渲染的节点<template></template>
+            return '\n            <a ys:if="isShow" target="_blank" href={url} :style={bgd}>\n                <Lazy style="position: absolute; height: 100%; width: 100%; bottom: 0;" alt="" :src="item.cover.url" />\n                <div style="position: absolute; bottom: 0; width: 100%; box-sizing: border-box; padding: 1em; background: rgba(0, 0, 0, .6);">\n                    <h2>{ title }\uFF08{year}\uFF09</h2>\n                    <p>\u5BFC\u6F14: {directors}</p>\n                    <p>\u4FE1\u606F: {info}</p>\n                    <p>\u8BC4\u5206:\n                        <span ys:if={rating}>\n                            {rating.value}/{rating.max + \' \'} {rating.count}\u8BC4\u4EF7\n                        </span>\n                        <span ys:elseif={!rating}>\n                            \u6682\u65E0\n                        </span>\n                    </p>\n                </div>\n            </a>\n        ';
         }
     }]);
 
     return Movie;
 }(__WEBPACK_IMPORTED_MODULE_1_yisec__["Component"]);
 
-var App = function (_Component4) {
-    _inherits(App, _Component4);
+var Douban = (_temp6 = _class4 = function (_Component4) {
+    _inherits(Douban, _Component4);
 
-    function App() {
-        var _ref3;
+    function Douban() {
+        var _ref5;
 
-        var _temp3, _this6, _ret3;
+        var _temp5, _this6, _ret4;
 
-        _classCallCheck(this, App);
+        _classCallCheck(this, Douban);
 
-        for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-            args[_key3] = arguments[_key3];
+        for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+            args[_key4] = arguments[_key4];
         }
 
-        return _ret3 = (_temp3 = (_this6 = _possibleConstructorReturn(this, (_ref3 = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref3, [this].concat(args))), _this6), _this6.state = {
+        return _ret4 = (_temp5 = (_this6 = _possibleConstructorReturn(this, (_ref5 = Douban.__proto__ || Object.getPrototypeOf(Douban)).call.apply(_ref5, [this].concat(args))), _this6), _this6.state = {
             type: 'now'
-        }, _this6.mclass = __WEBPACK_IMPORTED_MODULE_2__index_scss___default.a, _this6.components = {
+        }, _this6.moduleCss = __WEBPACK_IMPORTED_MODULE_2__index_scss___default.a, _this6.components = {
             Movie: Movie,
             Wall: Wall
         }, _this6.loadMore = function () {
@@ -1128,33 +1248,31 @@ var App = function (_Component4) {
             _this6.use(_this6.list[0])();
         }, _this6.updateData = function () {
             store['get-' + _this6.state.type]();
-        }, _this6.use = function (_ref4) {
-            var type = _ref4.type,
-                title = _ref4.title;
+        }, _this6.use = function (_ref6) {
+            var type = _ref6.type,
+                title = _ref6.title;
             return function () {
                 document.title = title;
                 var preType = _this6.state.type;
 
+                _this6[preType + 'Top'] = Scroll.top;
                 _this6.state.type = type;
                 if (!store[type].length) {
                     _this6.updateData();
                 }
-                _this6[preType + 'Top'] = Scroll.top;
                 Object(__WEBPACK_IMPORTED_MODULE_1_yisec__["forceUpdate"])();
                 Scroll.top = _this6[type + 'Top'] || 0;
             };
         }, _this6.list = [{ type: 'now', title: '正在上映' }, { type: 'top250', title: 'Top250' }], _this6.render = function () {
-            return '\n            <div>\n                <Wall :onScroll="loadMore">\n                    <div v-for="item in store[type]">\n                        <Movie :item="item" :props="item" :key="item.id" />\n                    </div>\n                </Wall> \n                <div mclass="nav" v-for="item in list">\n                    <div @click="use(item)">{{item.title}}</div>\n                </div> \n            </div>\n        ';
-        }, _temp3), _possibleConstructorReturn(_this6, _ret3);
+            return '\n            <div>\n                <div style="padding-bottom: 60px; max-width: 600px;">\n                    <Wall onScroll={loadMore} ref="xx">\n                        <div ys:for={item in store[type]}>\n                            <Movie item={item} :props={item} key={item.id} />\n                        </div>\n                    </Wall>\n                </div>\n                <div class="nav" ys:for={item in list}>\n                    <div @click={use(item)}>{item.title}</div>\n                </div>\n            </div>\n        ';
+        }, _temp5), _possibleConstructorReturn(_this6, _ret4);
     }
 
-    return App;
-}(__WEBPACK_IMPORTED_MODULE_1_yisec__["Component"]);
+    return Douban;
+}(__WEBPACK_IMPORTED_MODULE_1_yisec__["Component"]), _class4.defaultProps = {
+    store: store
+}, _temp6);
 
-var container = document.createElement('div');
-document.body.appendChild(container);
-
-window.xx = Object(__WEBPACK_IMPORTED_MODULE_1_yisec__["render"])(App, { store: store }, container);
 
 /***/ }),
 /* 10 */
@@ -1165,6 +1283,7 @@ window.xx = Object(__WEBPACK_IMPORTED_MODULE_1_yisec__["render"])(App, { store: 
 var jsonp = function () {
     var id = 0;
     return function jsonp(url, callback) {
+        var timeStart = Date.now();
         id += 1;
         var script = document.createElement('script');
         if (url.includes('?')) {
@@ -1174,6 +1293,7 @@ var jsonp = function () {
         }
         script.src = url;
         window['jsonp' + id] = function (res) {
+            console.log('请求时间', Date.now() - timeStart);
             callback && callback(res);
         };
         document.head.appendChild(script);
@@ -1227,6 +1347,112 @@ exports.push([module.i, ".nav-V05ds {\n  position: fixed;\n  z-index: 20000;\n  
 // exports
 exports.locals = {
 	"nav": "nav-V05ds"
+};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_yisec__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_yisec___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_yisec__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_scss__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__index_scss__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var _default = function (_Component) {
+    _inherits(_default, _Component);
+
+    function _default() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, _default);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _default.__proto__ || Object.getPrototypeOf(_default)).call.apply(_ref, [this].concat(args))), _this), _this.moduleCss = __WEBPACK_IMPORTED_MODULE_1__index_scss___default.a, _this.state = {
+            src: ''
+        }, _this.handleChange = function (e) {
+            _this.state.src = URL.createObjectURL(e.target.files[0]);
+        }, _this.touchend = function (e) {
+            console.log('touchend');
+            e.preventDefault();
+        }, _this.click = function () {
+            console.log('click');
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(_default, [{
+        key: "render",
+        value: function render() {
+            return "\n        <div>\n            <div style=\"overflow-x: hidden;\">\n                <div class=\"test\">\n                    <div></div>\n                </div>\n            </div>\n            <input @click={click} @touchend={touchend} style=\"height: 300px; background: red; display: block;\" type=\"checkbox\" />\n            <img :src=\"src\" alt=\"\" style=\"width: 100%; height: auto;\">\n            <input type=\"file\" accept=\"image/*\" @change=\"handleChange\" />\n            <svg width=\"120\" height=\"120\" viewPort=\"0 0 120 120\" version=\"1.1\"\n                    xmlns=\"http://www.w3.org/2000/svg\">\n                <rect x=\"-100\" y=\"10\" width=\"100\" height=\"100\">\n                <animate attributeType=\"XML\" attributeName=\"x\" from=\"-100\" to=\"120\"\n                    dur=\"10s\" repeatCount=\"indefinite\"/>\n                </rect>\n            </svg>\n        </div>\n        ";
+        }
+    }]);
+
+    return _default;
+}(__WEBPACK_IMPORTED_MODULE_0_yisec__["Component"]);
+
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(15);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--2-1!../../node_modules/sass-loader/lib/loader.js!./index.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--2-1!../../node_modules/sass-loader/lib/loader.js!./index.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".test-fHCRM {\n  position: relative; }\n  .test-fHCRM div {\n    height: 200px;\n    background: blue;\n    position: relative; }\n    .test-fHCRM div::before {\n      content: \"\";\n      position: absolute;\n      top: 100%;\n      left: 0;\n      height: 20px;\n      width: 10px;\n      background: red; }\n", ""]);
+
+// exports
+exports.locals = {
+	"test": "test-fHCRM"
 };
 
 /***/ })

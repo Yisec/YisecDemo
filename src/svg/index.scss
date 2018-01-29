@@ -1,0 +1,48 @@
+.test {
+    // overflow-x: hidden;
+    position: relative;
+    div {
+        height: 200px;
+        background: blue;
+        position: relative;
+        &::before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 0;
+            height: 20px;
+            width: 10px;
+            background: red;
+        }
+    }
+}
+
+.circle {
+    stroke-dasharray: 700;
+    stroke-dashoffset: 700;
+    animation: dash1 1s linear both;
+  }
+  
+  @keyframes dash1 {
+    from {
+      stroke-dashoffset: 700;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .path {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: dash .5s 1s linear both;
+  }
+  
+  @keyframes dash {
+    from {
+      stroke-dashoffset: 200;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }

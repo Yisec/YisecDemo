@@ -1,81 +1,59 @@
-import S from './index.scss'
-import storage from './store'
-import './douban'
-
-import Fv,{
+import Yisec, {
     Component,
     render,
     observer,
     addPipe,
+    router,
+    cssModule,
 } from 'yisec';
+import S from './index.scss'
+import storage from './store'
+import Douban from './douban'
+import Svg from './svg'
 
 addPipe({
     date(time) {
-        const d = new Date(time) 
+        const d = new Date(time)
         return `创建于: ${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
-    }
+    },
+    log(any) {
+        console.log('log', any)
+        return any
+    },
 })
 
 class Btn extends Component {
+    static defaultProps = {
+        title: '默认的',
+    }
+    create = () => {
+        console.log('哈哈哈哈哈')
+    }
     template = `
-        <button style="background: red;" @click="click">
+        <button style="background: red;" @click="click" oncreate={create}>
             <span>
-                <slot></slot>
+                <slot />
             </span>
         </button>
     `
-    click = () => {
-        this.props.click()
+    click = (e) => {
+        this.props.click(e)
         this.$emit('heihei', 1, 2)
     }
 }
 
-// store，可直接使用
-const store = observer({
-    items: storage.get() || [],
-    time: 0,
-    save() {
-        storage.save(this.items)
-    },
-}, {deep: true})
-
+@cssModule(S)
 class Todo extends Component {
     state = {
         edit: false,
         store,
     }
-    mclass = S
     components = {
         Btn,
     }
-    template = `
-        <div class="flex" mclass="todo-item" leaveTime="300" leave-class="xxx">
-            <input type="checkbox" :checked="item.complete" @change="toggle" />
-            {{index}}:
-            <div mclass="item-text">
-                <input 
-                    v-if="state.edit" 
-                    type="text" 
-                    ref="$title" 
-                    :value="item.title" 
-                    @ctrlEnter="toggleEdit" 
-                    @blur="toggleEdit" 
-                    autofocus />
-                <div v-if="!state.edit" @click="toggleEdit">
-                    {{item.title}}
-                </div>
-            </div>
-            <div>
-                {{ store.time }}
-                <button @click="() => store.time++">+1</button>
-            </div>
-            <Btn @click="del"> 
-                del
-            </Btn>
-        </div>
-        <p style="font-size: 12px; color: gray; text-align: right;">{{props.key|date}}</p>
-        <slot @name="props.key" />
-    `
+    willMount() {
+        console.log(this.props)
+    }
     willUnmount() {
         console.log('(ಥ _ ಥ)被卸载了', this.props)
     }
@@ -103,13 +81,43 @@ class Todo extends Component {
         this.props.item.complete = !this.props.item.complete
         this.props.save()
     }
+    render() {
+        return (`
+            <div = class="flex todo-item" leaveTime="300" leave-class="xxx">
+                <input type="checkbox" :checked={item.complete} @change={toggle} />
+                {index}:
+                <div class="item-text">
+                    <template ys:if={state.edit}>
+                        <input
+                            type="text"
+                            ref="$title"
+                            :value={item.title}
+                            @ctrlEnter={toggleEdit}
+                            @blur={toggleEdit}
+                            autofocus />
+                    </template>
+                    <div ys:if={!state.edit} @click={toggleEdit}>
+                        {item.title}
+                    </div>
+                </div>
+                <div>
+                    { store.time }
+                    <button @click={() => store.time++}>+1</button>
+                </div>
+                <Btn @click="del">
+                    del
+                </Btn>
+            </div>
+            <p style="font-size: 12px; color: gray; text-align: right;">{props.key|date|log}</p>
+            <slot @name={props.key}/>
+        `)
+    }
 }
 
-Fv.register('Todo', Todo)
+Yisec.register('Todo', Todo)
 
+@cssModule(S)
 class TodoList extends Component {
-    // 处理css modules
-    mclass = S
     // state 状态
     state = {
         filter: 'all',
@@ -120,33 +128,41 @@ class TodoList extends Component {
         currentItems() {
             const { store } = this.props
             const type = this.state.filter
-            return store.items.filter(i => {
-                if (type == 'all') {
+            const result = store.items.filter((item) => {
+                if (type === 'all') {
                     return true
-                } else if (type == 'active') {
-                    return !i.complete
-                } else if (type == 'complete') {
-                    return i.complete
+                } else if (type === 'complete') {
+                    return item.complete
                 }
+                return !item.complete
             })
+            console.log(result)
+            return result
         },
         left() {
-            return this.props.store.items.filter(i => !i.complete).length
+            return store.items.length
         },
     }
     emit = {
         heihei: () => {
             console.log(this.state, '被heihei了')
-        }
+        },
     }
     pageChange = () => {
         this.$emitChildren('pageSwitch', 'hide')
     }
-    changeFilter = (type) => (event) => {
+    changeFilter = type => (event) => {
         event && event.stopPropagation()
         this.state.filter = type
     }
-    del = (id) => () => {
+    willMount() {
+        console.log(this.getType)
+    }
+    getType(type) {
+        return type
+    }
+    del = id => (event) => {
+        event.stopPropagation()
         const { store } = this.props
         store.items = store.items.filter(i => i.id != id)
         store.save()
@@ -165,29 +181,31 @@ class TodoList extends Component {
     slotClick = () => {
         console.log(this.state.filter)
     }
-    render () {
+    render() {
         return (`
-            <div mclass="main" :enter-mclass="['transition-up']">
-                <h1 mclass="xx haha" @click="pageChange"> Todo List </h1>
-                <input 
-                    type="text" 
-                    mclass="add-input"
+            <div class="main" :enter-class={['transition-up']}>
+                <Link href="/douban">去豆瓣</Link>
+                <Link href="/svg">SVG</Link>
+                <h1 class="xx haha" @click="pageChange"> Todo List </h1>
+                <input
+                    type="text"
+                    class="add-input"
                     ref="$input"
                     @enter="add"
                     placeholder="add a todo item" />
-                <div v-for="(item,index) in currentItems">
-                    <Todo :index="index" :item="item" :del="del(item.id)" :key="item.id" :save="store.save">
-                        <p :click="slotClick">slot render {{ name | date }}</p>
+                <div ys:for="(item,index) in currentItems">
+                    <Todo :index="index" item={item} del={del(item.id)} key={item.id} save={store.save}>
+                        <p click={slotClick}>slot render { name | date }</p>
                     </Todo>
                 </div>
-                <div v-if="!currentItems.length">
+                <div ys:if={!currentItems.length}>
                     Empty !!!
                 </div>
                 <div>
-                    {{left}} left
-                    <span v-for="type in state.buttons" mclass="btns">
-                        <button @click="changeFilter(type)" :mclass="{current: state.filter === type}">
-                            {{type}}
+                    {left} left
+                    <span ys:for={type in state.buttons} class="btns">
+                        <button @click={changeFilter(type)} :class={[{current: state.filter === type}]}>
+                            {getType(type)}
                         </button>
                     </span>
                 </div>
@@ -198,4 +216,35 @@ class TodoList extends Component {
 
 // console.log(process.env.NAME)
 
-window.xx = render(TodoList, { store }, document.querySelector('#app'))
+// store，可直接使用
+const store = observer({
+    items: storage.get() || [],
+    time: 0,
+    save() {
+        storage.save(this.items)
+    },
+}, { deep: true })
+
+export default () => {
+    const meta = document.createElement('meta')
+    meta.setAttribute('name', 'referrer')
+    meta.setAttribute('content', 'never')
+    document.head.appendChild(meta)
+
+    router({
+        hash: true,
+        $root: document.querySelector('#yisec'),
+        routes: {
+            '/': {
+                component: TodoList,
+                props: { store },
+            },
+            '/douban': {
+                component: Douban,
+            },
+            '/svg': {
+                component: Svg,
+            },
+        },
+    })
+}
