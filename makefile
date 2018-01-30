@@ -1,2 +1,12 @@
-ln:
-	ln -sf /Users/wangyong/me/Yisec node_modules/yisec
+install:
+	cnpm i
+	cd server; cnpm i
+
+update:
+	git pull --rebase
+	make install
+	npm run pro
+	pm2 restart yisec
+
+start:
+	pm2 start server/app.js --name="yisec"

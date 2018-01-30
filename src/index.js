@@ -143,10 +143,8 @@ class TodoList extends Component {
             return store.items.length
         },
     }
-    emit = {
-        heihei: () => {
-            console.log(this.state, '被heihei了')
-        },
+    heihei = () => {
+        console.log(this.state, '被heihei了')
     }
     pageChange = () => {
         this.$emitChildren('pageSwitch', 'hide')
@@ -225,7 +223,7 @@ const store = observer({
     },
 }, { deep: true })
 
-export default () => {
+export default function init() {
     const meta = document.createElement('meta')
     meta.setAttribute('name', 'referrer')
     meta.setAttribute('content', 'never')
@@ -233,7 +231,7 @@ export default () => {
 
     router({
         hash: true,
-        $root: document.querySelector('#yisec'),
+        $root: document.querySelector('#app'),
         routes: {
             '/': {
                 component: TodoList,
@@ -248,3 +246,5 @@ export default () => {
         },
     })
 }
+
+init()

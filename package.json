@@ -18,14 +18,15 @@
     "webpack": "^3.8.1"
   },
   "name": "testcori",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "webpack.config.js",
   "dependencies": {
-    "yisec": "0.0.1"
+    "yisec": "^0.0.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "export NAME=dev; webpack --watch --progress --colors --display-error-details",
+    "pro": "export NAME=pro; webpack --display-error-details",
     "static": "lyss --port=8901"
   },
   "author": "",

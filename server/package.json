@@ -1,0 +1,13 @@
+{
+  "name": "blog-server",
+  "version": "1.0.0",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "koa": "^2.3.0",
+    "koa-body": "^2.3.0",
+    "koa-compress": "^2.0.0",
+    "koa-cors": "^0.0.16",
+    "koa-router": "^7.2.1",
+    "koa-static": "^4.0.1"
+  }
+}

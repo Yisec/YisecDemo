@@ -62,10 +62,6 @@ module.exports = {
             }
         ]
     },
-
-    externals: {
-        yisec: "window.Yisec"
-    },
     // addition - add source-map support
     devtool: "source-map"
 };
