@@ -83,7 +83,7 @@ class Todo extends Component {
     }
     render() {
         return (`
-            <div = class="flex todo-item" leaveTime="300" leave-class="xxx">
+            <div class="flex todo-item" leaveTime="300" leave-class="xxx">
                 <input type="checkbox" :checked={item.complete} @change={toggle} />
                 {index}:
                 <div class="item-text">
