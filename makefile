@@ -3,7 +3,7 @@ install:
 	cd server; cnpm i
 
 update:
-	git add .;git stash;git stash drop;
+	- git add .;git stash;git stash drop;
 	git pull --rebase
 	make install
 	npm run pro
