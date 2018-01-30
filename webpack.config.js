@@ -15,7 +15,6 @@ if (fs.existsSync("./dist") && fs.statSync("./dist").isDirectory()) {
 // }())
 
 module.exports = {
-    watch: true,
     entry: {
         app: ["./src/index.js"]
     },
