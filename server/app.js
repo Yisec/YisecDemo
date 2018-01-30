@@ -35,7 +35,7 @@ app.use(compress({
 app.use(serve(path.resolve(__dirname, './../dist')))
 
 // 路由
-router.all('*', (ctx, next) => {
+router.all('/*', (ctx, next) => {
     const pathname = path.resolve(__dirname, './../index.html')
     if (fs.existsSync(pathname)) {
         const stat = fs.statSync(pathname)
