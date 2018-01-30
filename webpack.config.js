@@ -19,7 +19,7 @@ module.exports = {
         app: ["./src/index.js"]
     },
     output: {
-        filename: "./dist/[name].js"
+        filename: "./dist/yisec/[name].js"
     },
     resolve: {
         extensions: [".js", ".jsx"]
